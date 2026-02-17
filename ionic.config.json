@@ -1,0 +1,7 @@
+{
+  "name": "ProgramacionBloques",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

@@ -1,0 +1,351 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "level": "basic",
+      "title": "Función Suma",
+      "description": "Crea una función llamada 'suma' que reciba dos números (a, b) y devuelva su suma. aslkjasaklsdkalk as kdalkskdl kaskdl a ksdlas dklsa dlksak dlkks adkalsdlaskdalkkd lakdkladlas",
+      "expectedAnswer": 8,
+      "functionTest": {
+        "functionName": "suma",
+        "parameters": ["a", "b"],
+        "testCases": [
+          { "args": [3, 5], "expected": 8 },
+          { "args": [10, 20], "expected": 30 },
+          { "args": [2, 7], "expected": 9 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'suma' y agrega dos parámetros: a y b",
+        "Dentro de la función, retorna a + b usando el bloque de aritmética"
+      ],
+      "points": 10
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "title": "Función Resta",
+      "description": "Crea una función llamada 'resta' que reciba dos números (a, b) y devuelva el resultado de a - b.",
+      "expectedAnswer": 6,
+      "functionTest": {
+        "functionName": "resta",
+        "parameters": ["a", "b"],
+        "testCases": [
+          { "args": [10, 4], "expected": 6 },
+          { "args": [20, 5], "expected": 15 },
+          { "args": [7, 7], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'resta' y agrega dos parámetros: a y b",
+        "Dentro de la función, retorna a - b usando el bloque de aritmética"
+      ],
+      "points": 10
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "title": "Función Multiplicación",
+      "description": "Crea una función llamada 'multiplicacion' que reciba dos números (a, b) y devuelva su producto. Luego, usa el bloque 'Imprimir' para mostrar el resultado de multiplicacion(7, 6).",
+      "expectedAnswer": 42,
+      "functionTest": {
+        "functionName": "multiplicacion",
+        "parameters": ["a", "b"],
+        "testCases": [
+          { "args": [7, 6], "expected": 42 },
+          { "args": [5, 5], "expected": 25 },
+          { "args": [3, 0], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'multiplicacion' y agrega dos parámetros: a y b",
+        "Dentro de la función, retorna a × b usando el bloque de aritmética"
+      ],
+      "points": 10
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "title": "Función División",
+      "description": "Crea una función llamada 'division' que reciba dos números (a, b) y devuelva el resultado de a ÷ b. Luego, usa el bloque 'Imprimir' para mostrar el resultado de division(20, 4).",
+      "expectedAnswer": 5,
+      "functionTest": {
+        "functionName": "division",
+        "parameters": ["a", "b"],
+        "testCases": [
+          { "args": [20, 4], "expected": 5 },
+          { "args": [15, 3], "expected": 5 },
+          { "args": [10, 2], "expected": 5 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'division' y agrega dos parámetros: a y b",
+        "Dentro de la función, retorna a ÷ b usando el bloque de aritmética"
+      ],
+      "points": 10
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "title": "Función Módulo",
+      "description": "Crea una función llamada 'modulo' que reciba dos números (a, b) y devuelva el residuo de a ÷ b. Luego, usa el bloque 'Imprimir' para mostrar el resultado de modulo(10, 3).",
+      "expectedAnswer": 1,
+      "functionTest": {
+        "functionName": "modulo",
+        "parameters": ["a", "b"],
+        "testCases": [
+          { "args": [10, 3], "expected": 1 },
+          { "args": [15, 4], "expected": 3 },
+          { "args": [8, 2], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "El módulo es el residuo de la división. Usa el bloque de aritmética con la operación módulo",
+        "Nombra la función 'modulo' y agrega dos parámetros: a y b"
+      ],
+      "points": 10
+    },
+    {
+      "id": 6,
+      "level": "intermediate",
+      "title": "Función Doble",
+      "description": "Crea una función llamada 'doble' que reciba un número (n) y devuelva el doble de ese número. Luego, usa el bloque 'Imprimir' para mostrar el resultado de doble(5).",
+      "expectedAnswer": 10,
+      "functionTest": {
+        "functionName": "doble",
+        "parameters": ["n"],
+        "testCases": [
+          { "args": [5], "expected": 10 },
+          { "args": [3], "expected": 6 },
+          { "args": [0], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'doble' y agrega un parámetro: n",
+        "Dentro de la función, retorna n × 2"
+      ],
+      "points": 10
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "title": "Función Triple",
+      "description": "Crea una función llamada 'triple' que reciba un número (n) y devuelva el triple de ese número. Luego, usa el bloque 'Imprimir' para mostrar el resultado de triple(4).",
+      "expectedAnswer": 12,
+      "functionTest": {
+        "functionName": "triple",
+        "parameters": ["n"],
+        "testCases": [
+          { "args": [4], "expected": 12 },
+          { "args": [7], "expected": 21 },
+          { "args": [0], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'triple' y agrega un parámetro: n",
+        "Dentro de la función, retorna n × 3"
+      ],
+      "points": 10
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "title": "Función Cuadrado",
+      "description": "Crea una función llamada 'cuadrado' que reciba un número (n) y devuelva su cuadrado (n × n). Luego, usa el bloque 'Imprimir' para mostrar el resultado de cuadrado(5).",
+      "expectedAnswer": 25,
+      "functionTest": {
+        "functionName": "cuadrado",
+        "parameters": ["n"],
+        "testCases": [
+          { "args": [5], "expected": 25 },
+          { "args": [3], "expected": 9 },
+          { "args": [0], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'cuadrado' y agrega un parámetro: n",
+        "Dentro de la función, retorna n × n usando el bloque de aritmética"
+      ],
+      "points": 10
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "title": "Función Cubo",
+      "description": "Crea una función llamada 'cubo' que reciba un número (n) y devuelva su cubo (n × n × n). Luego, usa el bloque 'Imprimir' para mostrar el resultado de cubo(3).",
+      "expectedAnswer": 27,
+      "functionTest": {
+        "functionName": "cubo",
+        "parameters": ["n"],
+        "testCases": [
+          { "args": [3], "expected": 27 },
+          { "args": [2], "expected": 8 },
+          { "args": [5], "expected": 125 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'cubo' y agrega un parámetro: n",
+        "Multiplica n × n × n. Puedes usar dos bloques de multiplicación anidados"
+      ],
+      "points": 10
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "title": "Función Valor Absoluto",
+      "description": "Crea una función llamada 'absoluto' que reciba un número (n) y devuelva su valor absoluto. Luego, usa el bloque 'Imprimir' para mostrar el resultado de absoluto(-5).",
+      "expectedAnswer": 5,
+      "functionTest": {
+        "functionName": "absoluto",
+        "parameters": ["n"],
+        "testCases": [
+          { "args": [-5], "expected": 5 },
+          { "args": [3], "expected": 3 },
+          { "args": [0], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'absoluto' y agrega un parámetro: n",
+        "Usa el bloque 'Función matemática' con la opción 'valor absoluto' de la categoría Matemáticas"
+      ],
+      "points": 10
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "title": "Área del Rectángulo",
+      "description": "Crea una función llamada 'areaRectangulo' que reciba base y altura, y devuelva el área (base × altura). Luego, usa el bloque 'Imprimir' para mostrar el resultado de areaRectangulo(6, 4).",
+      "expectedAnswer": 24,
+      "functionTest": {
+        "functionName": "areaRectangulo",
+        "parameters": ["base", "altura"],
+        "testCases": [
+          { "args": [6, 4], "expected": 24 },
+          { "args": [5, 5], "expected": 25 },
+          { "args": [10, 3], "expected": 30 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'areaRectangulo' con dos parámetros: base y altura",
+        "El área de un rectángulo es base × altura"
+      ],
+      "points": 10
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "title": "Perímetro del Rectángulo",
+      "description": "Crea una función llamada 'perimetroRectangulo' que reciba base y altura, y devuelva el perímetro: 2 × (base + altura). Luego, usa el bloque 'Imprimir' para mostrar el resultado de perimetroRectangulo(5, 3).",
+      "expectedAnswer": 16,
+      "functionTest": {
+        "functionName": "perimetroRectangulo",
+        "parameters": ["base", "altura"],
+        "testCases": [
+          { "args": [5, 3], "expected": 16 },
+          { "args": [4, 4], "expected": 16 },
+          { "args": [10, 2], "expected": 24 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'perimetroRectangulo' con dos parámetros: base y altura",
+        "El perímetro es 2 × (base + altura). Primero suma, luego multiplica por 2"
+      ],
+      "points": 10
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "title": "Área del Triángulo",
+      "description": "Crea una función llamada 'areaTriangulo' que reciba base y altura, y devuelva el área: (base × altura) ÷ 2. Luego, usa el bloque 'Imprimir' para mostrar el resultado de areaTriangulo(6, 4).",
+      "expectedAnswer": 12,
+      "functionTest": {
+        "functionName": "areaTriangulo",
+        "parameters": ["base", "altura"],
+        "testCases": [
+          { "args": [6, 4], "expected": 12 },
+          { "args": [10, 5], "expected": 25 },
+          { "args": [8, 3], "expected": 12 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'areaTriangulo' con dos parámetros: base y altura",
+        "El área de un triángulo es (base × altura) ÷ 2"
+      ],
+      "points": 10
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "title": "Función Promedio",
+      "description": "Crea una función llamada 'promedio' que reciba dos números (a, b) y devuelva su promedio: (a + b) ÷ 2. Luego, usa el bloque 'Imprimir' para mostrar el resultado de promedio(4, 6).",
+      "expectedAnswer": 5,
+      "functionTest": {
+        "functionName": "promedio",
+        "parameters": ["a", "b"],
+        "testCases": [
+          { "args": [4, 6], "expected": 5 },
+          { "args": [10, 20], "expected": 15 },
+          { "args": [0, 0], "expected": 0 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'promedio' con dos parámetros: a y b",
+        "El promedio es (a + b) ÷ 2. Primero suma, luego divide entre 2"
+      ],
+      "points": 10
+    },
+    {
+      "id": 15,
+      "level": "advanced",
+      "title": "Función Potencia",
+      "description": "Crea una función llamada 'potencia' que reciba base y exponente, y devuelva base elevada al exponente. Luego, usa el bloque 'Imprimir' para mostrar el resultado de potencia(2, 3).",
+      "expectedAnswer": 8,
+      "functionTest": {
+        "functionName": "potencia",
+        "parameters": ["base", "exponente"],
+        "testCases": [
+          { "args": [2, 3], "expected": 8 },
+          { "args": [5, 2], "expected": 25 },
+          { "args": [3, 0], "expected": 1 }
+        ]
+      },
+      "hints": [
+        "Usa el bloque 'Función con retorno' de la categoría Funciones",
+        "Nombra la función 'potencia' con dos parámetros: base y exponente",
+        "Usa el bloque de aritmética con la operación 'potencia (^)' de la categoría Matemáticas"
+      ],
+      "points": 10
+    }
+  ],
+  "levels": {
+    "basic": {
+      "name": "Básico",
+      "color": "#4CAF50",
+      "description": "Funciones con operaciones aritméticas básicas"
+    },
+    "intermediate": {
+      "name": "Intermedio",
+      "color": "#FF9800",
+      "description": "Funciones con un parámetro y transformaciones"
+    },
+    "advanced": {
+      "name": "Avanzado",
+      "color": "#F44336",
+      "description": "Funciones de geometría y operaciones compuestas"
+    }
+  }
+}

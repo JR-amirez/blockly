@@ -1,0 +1,176 @@
+.console-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #2d2d2d;
+  border-bottom: 1px solid #404040;
+}
+
+.console-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.console-output {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.console-placeholder {
+  color: #666;
+  font-style: italic;
+}
+
+.console-line {
+  display: flex;
+  gap: 12px;
+  padding: 2px 0;
+}
+
+.line-number {
+  color: #666;
+  min-width: 24px;
+  text-align: right;
+}
+
+.line-content {
+  color: #4ec9b0;
+}
+
+/* Test results */
+.console-test-results {
+  margin-top: 8px;
+  border-top: 1px solid #404040;
+  padding-top: 8px;
+}
+
+.test-results-header {
+  color: #9cdcfe;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.test-result-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.test-result-line ion-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.test-passed ion-icon {
+  color: #4caf50;
+}
+
+.test-failed ion-icon {
+  color: #f44336;
+}
+
+.test-call {
+  color: #dcdcaa;
+}
+
+.test-arrow {
+  color: #666;
+}
+
+.test-actual {
+  color: #ce9178;
+  font-weight: 600;
+}
+
+.test-passed .test-actual {
+  color: #4ec9b0;
+}
+
+.test-expected {
+  color: #808080;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+/* Test summary */
+.test-summary {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+}
+
+.test-summary-passed {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.test-summary-failed {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* Modal action buttons */
+.console-modal-actions {
+  padding: 12px 16px 16px;
+  background: #2d2d2d;
+  border-top: 1px solid #404040;
+}
+
+.console-next-btn {
+  --background: #4caf50;
+  --background-hover: #43a047;
+  --border-radius: 12px;
+  font-weight: 600;
+}
+
+.console-close-btn {
+  --border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Results modal */
+.results-modal {
+  --width: 90%;
+  --max-width: 450px;
+  --height: auto;
+  --max-height: 80vh;
+  --border-radius: 16px;
+  --background: transparent;
+  --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.results-modal .ion-page {
+  position: relative;
+  contain: content;
+  overflow: visible;
+}
+
+.results-modal .console-container {
+  height: auto;
+  max-height: 70vh;
+}
