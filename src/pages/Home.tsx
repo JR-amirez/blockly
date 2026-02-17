@@ -89,6 +89,7 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
   const [maxScore, setMaxScore] = useState<number>(0);
   const [showExitModal, setShowExitModal] = useState<boolean>(false);
   const [configLoaded, setConfigLoaded] = useState<boolean>(false);
+  const [totalExercises, setTotalExercises] = useState<number>(0);
   const [tiempoRestante, setTiempoRestante] = useState(0);
   const [showTimeUp, setShowTimeUp] = useState<boolean>(false);
   const [puntuacionTotal, setPuntuacionTotal] = useState(0);
@@ -127,6 +128,15 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
     };
 
     cargarConfig();
+
+    fetch("/data/exercises.json")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data.exercises)) {
+          setTotalExercises(data.exercises.length);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -506,7 +516,7 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
               </div>
               <div className="card">
                 <p className="title">NÚMERO DE EJERCICIOS</p>
-                <p className="data">{}</p>
+                <p className="data">{totalExercises}</p>
               </div>
               <div className="card description">
                 <p className="title">DESCRIPCIÓN</p>

@@ -1,0 +1,9 @@
+{
+  "nombreApp": "STEAM-G",
+  "version": "1.0",
+  "autor": "Valeria C. Z.",
+  "fecha": "2026-02-16",
+  "descripcion": "Juego para el desarrollo de habilidades matemáticas",
+  "nivel": "basico",
+  "plataformas": ["android"]
+}
