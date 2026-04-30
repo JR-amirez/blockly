@@ -1,9 +1,38 @@
 {
   "nombreApp": "STEAM-G",
   "version": "1.0",
-  "autor": "Valeria C. Z.",
+  "autor": "Valeria C.",
   "fecha": "2026-02-16",
   "descripcion": "Juego para el desarrollo de habilidades matemáticas",
   "nivel": "basico",
-  "plataformas": ["android"]
+  "plataformas": ["android"],
+    "ar": {
+        "inicio": {
+            "activo": true,
+            "contenido": {
+                "texto": "¡Prepárate para jugar!",
+                "imagen": "/data/images/corazon.png",
+                "audio": "/data/audios/latidos.mp3",
+                "video": "/data/videos/a.mp4"
+            }
+        },
+        "acierto": {
+            "activo": true,
+            "contenido": {
+                "texto": "¡Prepárate para jugar!",
+                "imagen": "/data/images/corazon.png",
+                "audio": "/data/audios/latidos.mp3",
+                "video": "/data/videos/a.mp4"
+            }
+        },
+        "fin": {
+            "activo": true,
+            "contenido": {
+                "texto": "¡Prepárate para jugar!",
+                "imagen": "/data/images/corazon.png",
+                "audio": "/data/audios/latidos.mp3",
+                "video": "/data/videos/a.mp4"
+            }
+        }
+    }
 }

@@ -238,7 +238,6 @@
     height: auto;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(5, auto);
     gap: 12px;
     align-items: stretch;
 }

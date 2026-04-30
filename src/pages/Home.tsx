@@ -28,6 +28,7 @@ import {
   type ExerciseIndicator,
 } from "../components/blockly";
 import { App } from "@capacitor/app";
+import ARModal, { type ARTipo } from '../components/ARModal';
 
 type Difficulty = "basic" | "intermediate" | "advanced";
 
@@ -43,6 +44,23 @@ type ConfettiPiece = {
   color: string;
 };
 
+type ExerciseCatalogItem = {
+  id: number;
+  level: string;
+  points: number;
+};
+
+type ARSeccionConfig = {
+  activo?: boolean;
+  fondo?: string;
+  contenido?: {
+    texto?: string;
+    imagen?: string;
+    audio?: string;
+    video?: string;
+  };
+};
+
 type BlocklyRuntimeConfig = {
   nivel?: string;
   autor?: string;
@@ -51,6 +69,11 @@ type BlocklyRuntimeConfig = {
   descripcion?: string;
   nombreApp?: string;
   plataformas?: string[];
+  ar?: {
+    inicio?:  ARSeccionConfig;
+    acierto?: ARSeccionConfig;
+    fin?:     ARSeccionConfig;
+  };
 };
 
 const TIME_LIMIT_BY_LEVEL: Record<Difficulty, number> = {
@@ -85,18 +108,28 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
   const [isComplete, setisComplete] = useState<boolean>(true);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-  const [score, setScore] = useState<number>(0);
   const [maxScore, setMaxScore] = useState<number>(0);
   const [showExitModal, setShowExitModal] = useState<boolean>(false);
   const [configLoaded, setConfigLoaded] = useState<boolean>(false);
   const [totalExercises, setTotalExercises] = useState<number>(0);
+  const [levelTotalExercises, setLevelTotalExercises] = useState<number>(0);
+  const [exerciseCatalog, setExerciseCatalog] = useState<ExerciseCatalogItem[]>([]);
   const [tiempoRestante, setTiempoRestante] = useState(0);
   const [showTimeUp, setShowTimeUp] = useState<boolean>(false);
   const [puntuacionTotal, setPuntuacionTotal] = useState(0);
+  const [correctExerciseIds, setCorrectExerciseIds] = useState<number[]>([]);
   const [exerciseIndicator, setExerciseIndicator] =
     useState<ExerciseIndicator | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const lastExerciseIndex = useRef<number>(-1);
+
+  // ── Realidad Aumentada ────────────────────────────────────────────────────
+  const [showARModal, setShowARModal]   = useState<boolean>(false);
+  const [arTipo, setARTipo]             = useState<ARTipo>('inicio');
+  const arConfigRef        = useRef<BlocklyRuntimeConfig['ar']>(undefined);
+  const arOnCloseRef       = useRef<(() => void) | null>(null);
+  const pendingARInicioRef = useRef<boolean>(false);
+  const lastIsCorrectRef   = useRef<boolean | null>(null);
 
   useEffect(() => {
     const cargarConfig = async () => {
@@ -120,6 +153,7 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
         if (data.descripcion) setAppDescripcion(data.descripcion);
         if (data.plataformas) setAppPlataformas(data.plataformas.join(", "));
         if (data.nombreApp) setAppNombreJuego(data.nombreApp);
+        if (data.ar) arConfigRef.current = data.ar;
       } catch (err) {
         console.error("No se pudo cargar bloques-config.json", err);
       } finally {
@@ -134,10 +168,27 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
       .then((data) => {
         if (Array.isArray(data.exercises)) {
           setTotalExercises(data.exercises.length);
+          setExerciseCatalog(
+            data.exercises.map((exercise: ExerciseCatalogItem) => ({
+              id: exercise.id,
+              level: exercise.level,
+              points: exercise.points,
+            })),
+          );
         }
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const currentLevelExercises = exerciseCatalog.filter(
+      (exercise) => exercise.level === difficultyConfig,
+    );
+    setLevelTotalExercises(currentLevelExercises.length);
+    setMaxScore(
+      currentLevelExercises.reduce((total, exercise) => total + exercise.points, 0),
+    );
+  }, [difficultyConfig, exerciseCatalog]);
 
   useEffect(() => {
     if (showCountdown && countdown > 0) {
@@ -155,7 +206,7 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
 
   // Temporizador del juego
   useEffect(() => {
-    if (showStartScreen || showCountdown || isPaused || pausado || isVerifying || showSummary || showTimeUp || tiempoRestante <= 0) return;
+    if (showStartScreen || showCountdown || isPaused || pausado || isVerifying || showARModal || showSummary || showTimeUp || tiempoRestante <= 0) return;
 
     const timer = setInterval(() => {
       setTiempoRestante((prev) => {
@@ -177,7 +228,7 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [showStartScreen, showCountdown, isPaused, pausado, isVerifying, showSummary, showTimeUp, tiempoRestante, exerciseIndicator, difficultyConfig]);
+  }, [showStartScreen, showCountdown, isPaused, pausado, isVerifying, showARModal, showSummary, showTimeUp, tiempoRestante, exerciseIndicator, difficultyConfig]);
 
   // Overlay de tiempo agotado: 3 segundos y pasa al siguiente ejercicio
   useEffect(() => {
@@ -319,6 +370,9 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
     setShowFeedback(false);
     setExerciseIndicator(null);
     setPuntuacionTotal(0);
+    setCorrectExerciseIds([]);
+    lastExerciseIndex.current = -1;
+    lastIsCorrectRef.current = null;
 
     setShowStartScreen(true);
   };
@@ -328,19 +382,68 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
     setShowCountdown(true);
     setActiveButtonIndex(null);
     setisComplete(true);
-    setScore(0);
     setPuntuacionTotal(0);
     setExerciseIndicator(null);
+    setCorrectExerciseIds([]);
+    lastExerciseIndex.current = -1;
+    lastIsCorrectRef.current = null;
+    pendingARInicioRef.current = true;
   };
+
+  // ── Helpers AR ────────────────────────────────────────────────────────────
+  const openAR = (tipo: ARTipo, onClose: () => void) => {
+    const seccion = arConfigRef.current?.[tipo];
+    const hasContent = seccion?.contenido &&
+      Object.values(seccion.contenido).some(v => typeof v === 'string' && v.trim() !== '');
+    if (seccion?.activo && hasContent) {
+      setARTipo(tipo);
+      arOnCloseRef.current = onClose;
+      setShowARModal(true);
+    } else {
+      onClose();
+    }
+  };
+
+  const handleARClose = () => {
+    setShowARModal(false);
+    const cb = arOnCloseRef.current;
+    arOnCloseRef.current = null;
+    cb?.();
+  };
+
+  // Dispara AR "inicio" justo después de que el contador llega a 0
+  useEffect(() => {
+    if (!showCountdown && pendingARInicioRef.current && configLoaded) {
+      pendingARInicioRef.current = false;
+      openAR('inicio', () => {});
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showCountdown, configLoaded]);
 
   const handleExerciseChange = useCallback((indicator: ExerciseIndicator) => {
     setExerciseIndicator(indicator);
     setPuntuacionTotal(indicator.score);
+
+    const exerciseId = indicator.exercise?.id;
+    if (indicator.isCorrect === true && exerciseId != null) {
+      setCorrectExerciseIds((prev) =>
+        prev.includes(exerciseId) ? prev : [...prev, exerciseId],
+      );
+    }
+
+    // AR "acierto": se dispara cuando isCorrect cambia a true
+    if (indicator.isCorrect === true && lastIsCorrectRef.current !== true) {
+      openAR('acierto', () => {});
+    }
+    lastIsCorrectRef.current = indicator.isCorrect;
+
     // Solo resetear el tiempo cuando cambia el ejercicio, no cuando cambia isCorrect
     if (indicator.currentIndex !== lastExerciseIndex.current) {
       lastExerciseIndex.current = indicator.currentIndex;
+      lastIsCorrectRef.current = null;
       setTiempoRestante(TIME_LIMIT_BY_LEVEL[difficultyConfig]);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficultyConfig]);
 
   const handleVerifyExercise = useCallback(() => {
@@ -352,6 +455,31 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
     const segs = Math.max(0, segundos % 60);
     return `${minutos}:${segs.toString().padStart(2, "0")}`;
   };
+
+  const totalEjerciciosResumen = exerciseIndicator?.total || levelTotalExercises;
+  const ejerciciosCorrectosResumen = Math.min(
+    correctExerciseIds.length,
+    totalEjerciciosResumen,
+  );
+  const ejerciciosIncorrectosResumen = Math.max(
+    totalEjerciciosResumen - ejerciciosCorrectosResumen,
+    0,
+  );
+  const porcentajeResumen =
+    totalEjerciciosResumen > 0
+      ? Math.round((ejerciciosCorrectosResumen / totalEjerciciosResumen) * 100)
+      : 0;
+  const etiquetaResumen =
+    totalEjerciciosResumen > 0 && ejerciciosCorrectosResumen === totalEjerciciosResumen
+      ? "¡PERFECTO! 🏆"
+      : porcentajeResumen >= 70
+        ? "¡Excelente! 🔥"
+        : porcentajeResumen >= 50
+          ? "¡Buen trabajo! 👍"
+          : "¡Sigue practicando! 💪";
+
+  const score = puntuacionTotal;
+  const etiqueta = etiquetaResumen;
 
   return (
     <IonPage>
@@ -380,14 +508,8 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
       {showSummary && (
         <div className="summary-overlay">
           <div className="summary-message">
-            {(() => {
-              const total = 0;
-              const correctas = 0;
-              const incorrectas = Math.max(total - correctas, 0);
-              const porcentaje =
-                total > 0 ? Math.round((correctas / total) * 100) : 0;
-              const etiqueta =
-                correctas === total
+            <>
+              {/*
                   ? "¡PERFECTO! 🏆"
                   : porcentaje >= 70
                     ? "¡Excelente! 🔥"
@@ -395,21 +517,21 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
                       ? "¡Buen trabajo! 👍"
                       : "¡Sigue practicando! 💪";
 
-              return (
-                <>
+              */}
+              <>
                   <h2>Juego Terminado</h2>
 
                   <div className="resumen-final">
                     <h3>Resultados Finales</h3>
 
                     <p>
-                      <strong>Ejercicios completados:</strong> {total}
+                      <strong>Ejercicios totales:</strong> {totalEjerciciosResumen}
                     </p>
                     <p>
-                      <strong>Correctos:</strong> {correctas}
+                      <strong>Correctos:</strong> {ejerciciosCorrectosResumen}
                     </p>
                     <p>
-                      <strong>Incorrectos:</strong> {incorrectas}
+                      <strong>Incorrectos:</strong> {ejerciciosIncorrectosResumen}
                     </p>
                     <p>
                       <strong>Puntuación total:</strong> {score} / {maxScore}
@@ -432,8 +554,7 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
                     Cerrar aplicación
                   </IonButton>
                 </>
-              );
-            })()}
+            </>
           </div>
 
           <div className="confetti-container">
@@ -507,6 +628,10 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
                 <p className="data">{appVersion}</p>
               </div>
               <div className="card">
+                <p className="title">AUTOR</p>
+                <p className="data">{appAutor}</p>
+              </div>
+              <div className="card">
                 <p className="title">FECHA DE CREACIÓN</p>
                 <p className="data">{appFecha}</p>
               </div>
@@ -569,6 +694,15 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
             </IonButton>
           </div>
         </div>
+      )}
+
+      {showARModal && (
+        <ARModal
+          tipo={arTipo}
+          contenido={arConfigRef.current?.[arTipo]?.contenido ?? {}}
+          fondo={arConfigRef.current?.[arTipo]?.fondo}
+          onClose={handleARClose}
+        />
       )}
 
       <IonContent fullscreen className="ion-padding">
@@ -676,11 +810,11 @@ const Home: React.FC<PlayProps> = ({ difficulty = "basic" }) => {
                 difficulty={difficultyConfig}
                 onComplete={(finalScore) => {
                   setPuntuacionTotal(finalScore);
-                  setShowSummary(true);
+                  openAR('fin', () => setShowSummary(true));
                 }}
                 onExerciseChange={handleExerciseChange}
                 onVerifying={setIsVerifying}
-                isPaused={isPaused || pausado || showCountdown}
+                isPaused={isPaused || pausado || showCountdown || showARModal}
               />
             </div>
 

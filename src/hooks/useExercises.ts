@@ -55,6 +55,7 @@ export function useExercises(level: string = 'basic'): UseExercisesReturn {
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [solvedExerciseIds, setSolvedExerciseIds] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Cargar ejercicios desde JSON
@@ -82,6 +83,7 @@ export function useExercises(level: string = 'basic'): UseExercisesReturn {
       setExerciseIndex(0);
       setScore(0);
       setIsCorrect(null);
+      setSolvedExerciseIds([]);
     }
   }, [allExercises, level]);
 
@@ -97,13 +99,16 @@ export function useExercises(level: string = 'basic'): UseExercisesReturn {
       const correct = Math.abs(userAnswer - currentExercise.expectedAnswer) < 0.001;
       setIsCorrect(correct);
 
-      if (correct) {
+      if (correct && !solvedExerciseIds.includes(currentExercise.id)) {
+        setSolvedExerciseIds((prev) =>
+          prev.includes(currentExercise.id) ? prev : [...prev, currentExercise.id],
+        );
         setScore((prev) => prev + currentExercise.points);
       }
 
       return correct;
     },
-    [currentExercise]
+    [currentExercise, solvedExerciseIds]
   );
 
   const checkFunctionAnswer = useCallback(
@@ -116,13 +121,16 @@ export function useExercises(level: string = 'basic'): UseExercisesReturn {
       const allPassed = results.every(r => r.passed);
       setIsCorrect(allPassed);
 
-      if (allPassed) {
+      if (allPassed && !solvedExerciseIds.includes(currentExercise.id)) {
+        setSolvedExerciseIds((prev) =>
+          prev.includes(currentExercise.id) ? prev : [...prev, currentExercise.id],
+        );
         setScore((prev) => prev + currentExercise.points);
       }
 
       return allPassed;
     },
-    [currentExercise]
+    [currentExercise, solvedExerciseIds]
   );
 
   const nextExercise = useCallback(() => {
@@ -136,6 +144,7 @@ export function useExercises(level: string = 'basic'): UseExercisesReturn {
     setExerciseIndex(0);
     setScore(0);
     setIsCorrect(null);
+    setSolvedExerciseIds([]);
   }, []);
 
   const resetCorrect = useCallback(() => {
